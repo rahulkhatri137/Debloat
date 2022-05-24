@@ -53,26 +53,40 @@ echo "export NAME=$NAME" >> ./bin.sh
 echo "-> Initing Environment..."
 rm -rf $OUTDIR
 mkdir -p $TMPDIR
-mkdir -p $IMAGEDIR
+mkdir -p $TARGETDIR
+mkdir -p #IMAGESDIR
 mkdir -p $OUTDIR
+
+chmod -R 777 ./
 
 if echo "${URL}" | grep -q "http\|https"; then
 echo "-> Downloading firmware..."
 cd $TMPDIR
 aria2c ${URL} > /dev/null 2>&1
+mv $TMPDIR/*.img $IMAGESDIR
 else
-mv $URL $TMPDIR/
+mv $URL $IMAGESDIR
 fi
+
 cd $LOCALDIR
+chmod -R 777 ./
 
 #Extract Image
-"$SCRIPTDIR"/extract.sh || LEAVE
+./image_extract.sh > /dev/null 2>&1  || LEAVE
 
 #Debloat
-"$LOCALDIR"/make.sh || LEAVE
+"$SCRIPTDIR"/debloat.sh $systemdir/system > /dev/null 2>&1  || LEAVE
+"$SCRIPTDIR"/debloat2.sh $systemdir/system > /dev/null 2>&1  || LEAVE
+
+#vars
+date=`date +%Y%m%d`
+outputname="$NAME-AB-$date-SGSI137".img
+output="$OUTDIR/$outputname"
+
+#Pack Image
+$bin/mkuserimg_mke2fs.sh "$systemdir" "$output" "ext4" "/system" $size -j "0" -T "1230768000" -C "$configdir/system_fs_config" -L "system" -I "256" -M "/system" -m "0" "$configdir/system_file_contexts"
 
 sudo rm -rf $TEMPDIR
 cd $OUTDIR
-cp -frp B*txt README.txt > /dev/null 2>&1 || LEAVE
 
 echo "-> Debloating GSI done!"

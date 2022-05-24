@@ -24,8 +24,8 @@ sudo bash url2Debloat.sh <link/gsi/image path> <Output Name>
 You can edit the tool but read the NOTICE/LICENSE!
 
 ## Released GSIs (RK137)
-SourceForge link: https://sourceforge.net/projects/gsis137/GSI/
-Telegram channel: https://t.me/rk137gsis
+SourceForge link: https://sourceforge.net/projects/sgsi137/
+Telegram channel: https://t.me/sgsi137
 
 ## Credits:  
 * Erfan GSIs: https://github.com/erfanoabdi/ErfanGSIs

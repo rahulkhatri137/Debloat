@@ -1,5 +1,4 @@
 .*
 tmp
 output
-image
-bin.sh
+workspace

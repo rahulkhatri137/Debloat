@@ -3,8 +3,13 @@
 TOOLDIR=`cd $( dirname ${BASH_SOURCE[0]} ) && pwd`
 HOST=$(uname)
 platform=$(uname -m)
-export IMAGEDIR=$TOOLDIR/image
-export SYSTEMDIR=$IMAGEDIR/system
+export bin=$TOOLDIR/tool_bin
+export LD_LIBRARY_PATH=$bin/$HOST/$platform/lib64
+export WORKSPACE=$TOOLDIR/workspace
+export IMAGESDIR=$WORKSPACE/images
+export TARGETDIR=$WORKSPACE/out
+export systemdir=$IMAGEDIR/system
 export OUTDIR=$TOOLDIR/output
 export SCRIPTDIR=$TOOLDIR/scripts
 export TMPDIR=$TOOLDIR/tmp
+export configdir=$TARGETDIR/config
