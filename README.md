@@ -33,5 +33,6 @@ Telegram channel: https://t.me/sgsi137
 * Xiaoxindada: https://github.com/xiaoxindada
 
 ## Note
+* Only raw images are supported!
 * If you are going to edit the fork, please respect the License and NOTICE!
 * If you want to contribute, fork and create a branch for the patch.

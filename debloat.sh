@@ -6,7 +6,6 @@ cd $LOCALDIR
 systemdir=$1
 
 #oem bloatwares
-
 rm -rf $1/reserve/*
 rm -rf $1/preload/*
 rm -rf $1/preset_apps/*
