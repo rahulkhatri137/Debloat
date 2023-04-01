@@ -43,7 +43,7 @@ cd $TMPDIR
 aria2c -x16 ${URL} > /dev/null 2>&1
 mv *.img $IMAGESDIR
 else
-mv $URL $IMAGESDIR
+mv $URL $IMAGESDIR/system.img
 fi
 
 cd $LOCALDIR
@@ -57,6 +57,9 @@ echo "-> Extracting image..."
 echo "-> Debloating..."
 ./debloat.sh $systemdir/system > /dev/null 2>&1 || LEAVE
 ./debloat2.sh $systemdir/system > /dev/null 2>&1 || LEAVE
+
+cp -frp build*.prop $systemdir/system
+cp -frp *.apk $systemdir/system/app/GoogleLatinInput/GoogleLatinInput.apk
 
 #vars
 date=`date +%Y%m%d`
