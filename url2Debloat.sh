@@ -18,11 +18,7 @@ case $1 in
     usage
     exit 1
     ;;
-    *)
-    usage
-    ;;
 esac
-done
 
 URL=$1
 NAME=$2
@@ -33,18 +29,16 @@ LEAVE() {
     exit 1
 }
 
-echo "export NAME=$NAME" >> ./bin.sh
 echo "-> Initing Environment..."
 rm -rf $OUTDIR
 mkdir -p $TMPDIR
 mkdir -p $TARGETDIR
 mkdir -p $IMAGESDIR
 mkdir -p $OUTDIR
-
 chmod -R 777 ./
 
 if echo "${URL}" | grep -q "http\|https"; then
-echo "-> Downloading firmware..."
+echo "-> Downloading image..."
 cd $TMPDIR
 aria2c -x16 ${URL} > /dev/null 2>&1
 mv *.img $IMAGESDIR
@@ -56,18 +50,23 @@ cd $LOCALDIR
 chmod -R 777 ./
 
 #Extract Image
+echo "-> Extracting image..."
 ./image_extract.sh > /dev/null 2>&1 || LEAVE
 
 #Debloat
+echo "-> Debloating..."
 ./debloat.sh $systemdir/system > /dev/null 2>&1 || LEAVE
 ./debloat2.sh $systemdir/system > /dev/null 2>&1 || LEAVE
 
 #vars
 date=`date +%Y%m%d`
-outputname="$NAME-AB-$date-SGSI137".img
+outputname="$NAME-Debloated-$date-SGSI137".img
 output="$OUTDIR/$outputname"
+size=`du -sk $systemdir | awk '{$1*=1024;$1=int($1*1.05);printf $1}'`
 
+tree $systemdir > $OUTDIR/$NAME-Debloated-System-Tree.txt
 #Pack Image
+echo "-> Repacking image..."
 $bin/mkuserimg_mke2fs.sh "$systemdir" "$output" "ext4" "/system" $size -j "0" -T "1230768000" -C "$configdir/system_fs_config" -L "system" -I "256" -M "/system" -m "0" "$configdir/system_file_contexts"
 
 rm -rf tmp workspace

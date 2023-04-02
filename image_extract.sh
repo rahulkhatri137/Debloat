@@ -11,7 +11,7 @@ EROFS_OFFSET="1024"
 SQUASHFS_OFFSET="0"
 
 
-partitions="system vendor product system_ext"
+partitions="system product system_ext"
 
 rm -rf $TARGETDIR
 mkdir -p $TARGETDIR
