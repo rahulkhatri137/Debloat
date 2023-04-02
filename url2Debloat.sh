@@ -72,6 +72,7 @@ tree $systemdir > $OUTDIR/$NAME-Debloated-System-Tree.txt
 echo "-> Repacking image..."
 $bin/mkuserimg_mke2fs.sh "$systemdir" "$output" "ext4" "/system" $size -j "0" -T "1230768000" -C "$configdir/system_fs_config" -L "system" -I "256" -M "/system" -m "0" "$configdir/system_file_contexts"
 
+echo "•> Packed $NAME := $size"
 rm -rf tmp workspace
 
 echo "-> Debloating GSI done!"
