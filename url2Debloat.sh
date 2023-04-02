@@ -53,6 +53,7 @@ chmod -R 777 ./
 echo "-> Extracting image..."
 ./image_extract.sh > /dev/null 2>&1 || LEAVE
 
+size=`du -sk $systemdir | awk '{$1*=1024;$1=int($1*1.05);printf $1}'`
 #Debloat
 echo "-> Debloating..."
 ./debloat.sh $systemdir/system > /dev/null 2>&1 || LEAVE
@@ -65,16 +66,6 @@ cp -frp *.apk $systemdir/system/app/GoogleLatinInput/GoogleLatinInput.apk
 date=`date +%Y%m%d`
 outputname="$NAME-Debloated-$date-SGSI137".img
 output="$OUTDIR/$outputname"
-size=`du -sk $systemdir | awk '{$1*=1024;$1=int($1*1.05);printf $1}'`
-bytesToHuman() {
-    b=${1:-0}; d=''; s=0; S=(Bytes {K,M,G,T,P,E,Z,Y}iB)
-    while ((b > 1024)); do
-        d="$(printf ".%02d" $((b % 1024 * 100 / 1024)))"
-        b=$((b / 1024))
-        let s++
-    done
-    echo "$b$d ${S[$s]}"
-}
 
 tree $systemdir > $OUTDIR/$NAME-Debloated-System-Tree.txt
 #Pack Image
